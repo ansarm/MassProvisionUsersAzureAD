@@ -4,8 +4,12 @@ $defaultPassword = "17May1977!"
 
 #Provision count max is 50000
 $ProvisionCount = 50
-
+1ew
 Import-Module AzureADPreview
+$PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
+$PasswordProfile.password = $defaultPassword
+$PasswordProfile.ForceChangePasswordNextLogin = $false
+
 
 Function ImportUser($user)
 {
@@ -14,11 +18,14 @@ Function ImportUser($user)
     $userprincipalname = $username+$TargetUPNSuffix
     $securepass =  ConvertTo-SecureString -string $defaultPassword -Force -AsPlainText
     Write-Host "Creating User " + $displayName
-    New-ADUser -EMail $userprincipalname -Name $displayName -Path $TargetContainer -State $_.State -Enabled $true -GivenName $_.GivenName -Surname $_.Surname -Country $_.Country -POBox $_.Zipcode -DisplayName $displayName -UserPrincipalName $userprincipalname -AccountPassword $securepass -SamAccountName $username
-
+    New-AzureADUser -DisplayName $displayName -PasswordProfile $PasswordProfile -UserPrincipalName $userprincipalname  `
+            -AccountEnabled $true -MailNickName $username -City $_.city -CompanyName $_.company -Country $_.country -Department $_.department `
+            -GivenName $_.GivenName -JobTitle $_.Title  -mobile $_.TelephoneNumber -PostalCode $_.ZipCode  -State $_.State -Surname $_.Surname 
+            
 }
 
 Connect-AzureAD -Credential (get-credential)
+
 
 $users = Import-Csv -Path $userFile
 $users[0..$ProvisionCount] | ForEach-Object { ImportUser $_ }
