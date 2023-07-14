@@ -1,6 +1,6 @@
 $userFile = ".\users.csv"
-$TargetUPNSuffix = "@ldapeditor.net"
-$defaultPassword = "17May1977!"
+$TargetUPNSuffix = "@contoso.com"
+$defaultPassword = "P@ssword!"
 
 #Provision count max is 50000
 $ProvisionCount = 50
