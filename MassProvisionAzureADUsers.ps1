@@ -1,6 +1,6 @@
 $userFile = ".\users.csv"
 $TargetUPNSuffix = "@contoso.com"
-$defaultPassword = "P@ssword!"
+$defaultPassword = "P@ssword2!"
 
 #Provision count max is 50000
 $ProvisionCount = 50
